@@ -32,6 +32,7 @@ func SerializeCountries() (countries []Country) {
 // FindCountry returns the country found in the sentence and if no country is found, returns an empty Country struct
 func FindCountry(locale, sentence string) Country {
 	for _, country := range countries {
+		// 根据 locale（语言标识）遍历所有支持项目
 		name, exists := country.Name[locale]
 
 		if !exists {
@@ -39,6 +40,7 @@ func FindCountry(locale, sentence string) Country {
 		}
 
 		// If the actual country isn't contained in the sentence, continue
+		// 对整个语句判断是否有对应的 城市，字符串匹配
 		if !strings.Contains(strings.ToLower(sentence), strings.ToLower(name)) {
 			continue
 		}

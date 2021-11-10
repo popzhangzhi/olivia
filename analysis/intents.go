@@ -49,6 +49,7 @@ func SerializeIntents(locale string) (_intents []Intent) {
 
 // SerializeModulesIntents retrieves all the registered modules and returns an array of Intents
 func SerializeModulesIntents(locale string) []Intent {
+	// 注意加载方式是通过init函数进行，类似 res/locales/en/modules.go:init()
 	registeredModules := modules.GetModules(locale)
 	intents := make([]Intent, len(registeredModules))
 
@@ -81,6 +82,7 @@ func GetIntentByTag(tag, locale string) Intent {
 // and an array of Documents which contains a word list associated with a tag
 func Organize(locale string) (words, classes []string, documents []Document) {
 	// Append the modules intents to the intents from res/datasets/intents.json
+	// 初始化数据从单个静态json文件，初始化modules 数据（go代码支持自定义替换）
 	intents := append(
 		SerializeIntents(locale),
 		SerializeModulesIntents(locale)...,
