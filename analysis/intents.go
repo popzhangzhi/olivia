@@ -80,6 +80,7 @@ func GetIntentByTag(tag, locale string) Intent {
 
 // Organize intents with an array of all words, an array with a representative word of each tag
 // and an array of Documents which contains a word list associated with a tag
+// 更加数据进行组织，生成所有的单词数组，所有的tag数组和具体每一个语句和tag组成的文档数组
 func Organize(locale string) (words, classes []string, documents []Document) {
 	// Append the modules intents to the intents from res/datasets/intents.json
 	// 初始化数据从单个静态json文件，初始化modules 数据（go代码支持自定义替换）
@@ -91,10 +92,12 @@ func Organize(locale string) (words, classes []string, documents []Document) {
 	for _, intent := range intents {
 		for _, pattern := range intent.Patterns {
 			// Tokenize the pattern's sentence
+			// 过滤&&替换些字符
 			patternSentence := Sentence{locale, pattern}
 			patternSentence.arrange()
 
 			// Add each word to response
+			// 所有的单词，去重加入到words
 			for _, word := range patternSentence.stem() {
 
 				if !util.Contains(words, word) {
@@ -103,6 +106,7 @@ func Organize(locale string) (words, classes []string, documents []Document) {
 			}
 
 			// Add a new document
+			// 每一个句子构成一个文档
 			documents = append(documents, Document{
 				patternSentence,
 				intent.Tag,
@@ -110,6 +114,7 @@ func Organize(locale string) (words, classes []string, documents []Document) {
 		}
 
 		// Add the intent tag to classes
+		// 把每一个tag加入到分类当中
 		classes = append(classes, intent.Tag)
 	}
 

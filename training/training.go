@@ -11,7 +11,9 @@ import (
 )
 
 // TrainData returns the inputs and outputs for the neural network
+// 构建训练数据，输入为数组，每个元素为所有词的数组（拥有的词置1）.输出tag数组。元素为所有tag的数组（拥有的tag置1）
 func TrainData(locale string) (inputs, outputs [][]float64) {
+	// 构建 词、tag、语句（含sentence）
 	words, classes, documents := analysis.Organize(locale)
 
 	for _, document := range documents {

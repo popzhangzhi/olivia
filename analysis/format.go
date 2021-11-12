@@ -36,7 +36,7 @@ func removeStopWords(locale string, words []string) []string {
 	stopWords := string(util.ReadFile("res/locales/" + locale + "/stopwords.txt"))
 
 	var wordsToRemove []string
-
+	// TODO 可以用更好的方式，第一标记需要移除的元素下标。第二次遍历加入即可。为什么当前使用的第一次取出需要移除的单词。第二次进行2次循环对比后得出最终被移除stopwrod之后的数据
 	// Iterate through all the stopwords
 	for _, stopWord := range strings.Split(stopWords, "\n") {
 		// Iterate through all the words of the given array
@@ -77,6 +77,7 @@ func (sentence Sentence) stem() (tokenizeWords []string) {
 		locale = "english"
 	}
 	// pattern中剔除stopWord
+	// TODO 仅适配与英文等分词用空格的语言，先空格分词，然后小写单词，然后移除指定的stopword
 	tokens := sentence.tokenize()
 
 	stemmer, err := snowball.New(locale)
@@ -84,7 +85,7 @@ func (sentence Sentence) stem() (tokenizeWords []string) {
 		fmt.Println("Stemmer error", err)
 		return
 	}
-
+	// 进行分词去除一些状态，例如从running -> run
 	// Get the string token and push it to tokenizeWord
 	for _, tokenizeWord := range tokens {
 		word := stemmer.Stem(tokenizeWord)
@@ -98,7 +99,10 @@ func (sentence Sentence) stem() (tokenizeWords []string) {
 func (sentence Sentence) WordsBag(words []string) (bag []float64) {
 	for _, word := range words {
 		// Append 1 if the patternWords contains the actual word, else 0
+		// 确定当前语句是否包含单词
 		var valueToAppend float64
+		// TODO 在之前训练数据的时候就已经进行过分词了，为什么还再次进行分词，来判断是否含有单词
+		// 如果拥有词，置1，否则0
 		if util.Contains(sentence.stem(), word) {
 			valueToAppend = 1
 		}
