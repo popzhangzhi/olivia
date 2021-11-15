@@ -9,12 +9,14 @@ type Matrix [][]float64
 
 // RandomMatrix returns the value of a random matrix of *rows* and *columns* dimensions and
 // where the values are between *lower* and *upper*.
+// 构建随机数矩阵[-1.0,1.0)
 func RandomMatrix(rows, columns int) (matrix Matrix) {
 	matrix = make(Matrix, rows)
 
 	for i := 0; i < rows; i++ {
 		matrix[i] = make([]float64, columns)
 		for j := 0; j < columns; j++ {
+			// [0.0,2.0) - 1.0 = [-1.0,1.0)
 			matrix[i][j] = rand.Float64()*2.0 - 1.0
 		}
 	}
@@ -23,6 +25,14 @@ func RandomMatrix(rows, columns int) (matrix Matrix) {
 }
 
 // CreateMatrix returns an empty matrix which is the size of rows and columns
+// 每个语句对应的隐藏层
+/* [][]float
+    column
+row 0 []float{Len(columns)}
+	1 []float{Len(columns)}
+	2 []float{Len(columns)}
+	3 []float{Len(columns)}
+*/
 func CreateMatrix(rows, columns int) (matrix Matrix) {
 	matrix = make(Matrix, rows)
 

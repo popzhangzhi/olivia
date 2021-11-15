@@ -58,10 +58,13 @@ func CreateNetwork(locale string, rate float64, input, output Matrix, hiddensNod
 	inputMatrix := input
 	layers := []Matrix{inputMatrix}
 	// Generate the hidden layer
+	// 根据隐藏的节点，构建对应的隐藏层，行数为input的长度，列数为隐藏层
 	for _, hiddenNodes := range hiddensNodes {
+		// len(input) = 总共需要训练的语句次数
 		layers = append(layers, CreateMatrix(len(input), hiddenNodes))
 	}
 	// Add the output values to the layers arrays
+	// layers（空层，输入层，隐藏层），初始化空层，结果层
 	layers = append(layers, output)
 
 	// Generate the weights and biases
