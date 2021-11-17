@@ -74,8 +74,9 @@ func CreateNetwork(locale string, rate float64, input, output Matrix, hiddensNod
 
 	for i := 0; i < weightsNumber; i++ {
 		rows, columns := Columns(layers[i]), Columns(layers[i+1])
-
+		// 从上一个columns 映射到下一个columns 的乘积,线性关系？
 		weights = append(weights, RandomMatrix(rows, columns))
+		// 从上一个rows下标 映射到下一个columns的偏移，相加？
 		biases = append(biases, RandomMatrix(Rows(layers[i]), columns))
 	}
 
@@ -108,8 +109,9 @@ func (network Network) Save(fileName string) {
 func (network *Network) FeedForward() {
 	for i := 0; i < len(network.Layers)-1; i++ {
 		layer, weights, biases := network.Layers[i], network.Weights[i], network.Biases[i]
-
+		// 计算layer中与weights的点积，横*竖
 		productMatrix := DotProduct(layer, weights)
+		// 计算偏移
 		Sum(productMatrix, biases)
 		ApplyFunction(productMatrix, Sigmoid)
 
