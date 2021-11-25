@@ -6,18 +6,14 @@ import (
 	"os"
 	"strings"
 
-	"github.com/olivia-ai/olivia/locales"
-	"github.com/olivia-ai/olivia/training"
-
-	"github.com/olivia-ai/olivia/dashboard"
-
-	"github.com/olivia-ai/olivia/util"
-
 	"github.com/gookit/color"
-
+	"github.com/olivia-ai/olivia/console"
+	"github.com/olivia-ai/olivia/dashboard"
+	"github.com/olivia-ai/olivia/locales"
 	"github.com/olivia-ai/olivia/network"
-
 	"github.com/olivia-ai/olivia/server"
+	"github.com/olivia-ai/olivia/training"
+	"github.com/olivia-ai/olivia/util"
 )
 
 var neuralNetworks = map[string]network.Network{}
@@ -25,9 +21,11 @@ var neuralNetworks = map[string]network.Network{}
 func main() {
 	port := flag.String("port", "8080", "The port for the API and WebSocket.")
 	localesFlag := flag.String("re-train", "", "The locale(s) to re-train.")
+	isCli := flag.Bool("cli", false, "run console shell")
 	flag.Parse()
 
 	// If the locales flag isn't empty then retrain the given models
+	// TODO 不以控制文件来实现重训练
 	if *localesFlag != "" {
 		reTrainModels(*localesFlag)
 	}
@@ -53,9 +51,13 @@ func main() {
 	if os.Getenv("PORT") != "" {
 		*port = os.Getenv("PORT")
 	}
+	if *isCli {
+		console.NewService().Serve(neuralNetworks)
+	} else {
+		// Serves the server
+		server.Serve(neuralNetworks, *port)
+	}
 
-	// Serves the server
-	server.Serve(neuralNetworks, *port)
 }
 
 // reTrainModels retrain the given locales

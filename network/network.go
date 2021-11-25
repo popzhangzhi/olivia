@@ -46,7 +46,7 @@ func LoadNetwork(fileName string) *Network {
 
 // CreateNetwork creates the network by generating the layers, weights and biases
 func CreateNetwork(locale string, rate float64, input, output Matrix, hiddensNodes ...int) Network {
-	// input、output 数组头上追加新的初始化层
+	// input、output 数组头上追加新的空层
 	input = append(Matrix{
 		make([]float64, len(input[0])),
 	}, input...)
@@ -74,9 +74,9 @@ func CreateNetwork(locale string, rate float64, input, output Matrix, hiddensNod
 
 	for i := 0; i < weightsNumber; i++ {
 		rows, columns := Columns(layers[i]), Columns(layers[i+1])
-		// 从上一个columns 映射到下一个columns 的乘积,线性关系？
+		// 权重
 		weights = append(weights, RandomMatrix(rows, columns))
-		// 从上一个rows下标 映射到下一个columns的偏移，相加？
+		// 偏移
 		biases = append(biases, RandomMatrix(Rows(layers[i]), columns))
 	}
 
@@ -113,6 +113,7 @@ func (network *Network) FeedForward() {
 		productMatrix := DotProduct(layer, weights)
 		// 计算偏移
 		Sum(productMatrix, biases)
+		// 激活函数
 		ApplyFunction(productMatrix, Sigmoid)
 
 		// Replace the output values
@@ -181,6 +182,7 @@ func (network *Network) Train(iterations int) {
 	bar.Start()
 
 	// Train the network
+	// 进行制定次数的训练，向前传播，先后调整，修正weights、biases
 	for i := 0; i < iterations; i++ {
 		network.FeedForward()
 		network.FeedBackward()

@@ -1,6 +1,6 @@
 module github.com/olivia-ai/olivia
 
-go 1.12
+go 1.16
 
 require (
 	github.com/fatih/color v1.9.0 // indirect
@@ -10,6 +10,7 @@ require (
 	github.com/mattn/go-colorable v0.1.6 // indirect
 	github.com/mattn/go-runewidth v0.0.9 // indirect
 	github.com/patrickmn/go-cache v2.1.0+incompatible
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/soudy/mathcat v0.0.0-20190121135055-f636e7f09e6c
 	github.com/tebeka/snowball v0.4.2
 	github.com/zmb3/spotify v0.0.0-20200422222148-5fe5f9535a2c

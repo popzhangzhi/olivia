@@ -86,9 +86,10 @@ func RandomizeResponse(locale, entry, tag, token string) (string, string) {
 		}
 
 		// Reply a "don't understand" message if the context isn't correct
+		// TODO 是否判断有问题？
 		cacheTag, _ := userCache.Get(token)
 		if intent.Context != "" && cacheTag != intent.Context {
-			return DontUnderstand, util.GetMessage(locale, DontUnderstand)
+			//return DontUnderstand, util.GetMessage(locale, DontUnderstand)
 		}
 
 		// Set the actual context

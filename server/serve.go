@@ -24,7 +24,7 @@ var (
 	// Create the neural network variable to use it everywhere
 	neuralNetworks map[string]network.Network
 	// Initializes the cache with a 5 minute lifetime
-	cache = gocache.New(5*time.Minute, 5*time.Minute)
+	Cache = gocache.New(5*time.Minute, 5*time.Minute)
 )
 
 // Serve serves the server in the given port
